@@ -46,11 +46,17 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Start analysis
+      - name: Start analysis 1
         uses: ForAllSecure/mcode-action@v1
         with:
           mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
-          args: --image ${{ steps.meta.outputs.tags }} --duration 300
+          args: --image ${{ steps.meta.outputs.tags }} --file Mayhemfile --duration 300
+
+      - name: Start analysis 2
+        uses: ForAllSecure/mcode-action@v1
+        with:
+          mayhem-token: ${{ secrets.MAYHEM_TOKEN }}
+          args: --image ${{ steps.meta.outputs.tags }} --file Mayhemfile-functions-update --duration 300
           sarif-output: sarif
 
       - name: Upload SARIF file(s)

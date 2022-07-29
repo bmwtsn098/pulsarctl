@@ -1,5 +1,5 @@
 # Build Stage:
-FROM golang:1.18
+FROM golang:1.18 as builder
 
 ## Install build dependencies.
 RUN apt-get update && \
@@ -12,8 +12,7 @@ WORKDIR /pulsarctl
 ## Build Step
 RUN go mod download
 RUN make pulsarctl
-WORKDIR bin
 
 # Package Stage
-#FROM --platform=linux/amd64 ubuntu:20.04
-#COPY --from=builder /fuzzme /
+FROM debian:bookworm-slim
+COPY --from=builder /pulsarctl/bin/pulsarctl /
